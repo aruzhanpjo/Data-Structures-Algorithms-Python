@@ -93,11 +93,13 @@ class AVLTree:
     def rotate_left(self, node):
         # Define a convenience pointer to the right child of the 
         # left child.
-        
+        rightLeftChild = self.right.left
         
         # Step 1 - the right child moves up to the node's position.
         # This detaches node from the tree, but it will be reattached
         # later.
+        if node.parent == None:
+            self.root = node.right
         
         # Step 2 - the node becomes the left child of what used
         # to be its right child, but is now its parent. This will
@@ -107,8 +109,8 @@ class AVLTree:
         # Step 3 - reattach right_left_child as the right child of node.
         
         
-        rightLeftChild = self.right.left
-        if self.root is not None:
+        
+
             
         
         pass
@@ -118,19 +120,24 @@ class AVLTree:
     def rotate_right(self, node):
         # Define a convenience pointer to the left child of the 
         # right child.
-
+        leftRightChild = node.left.right
         
         # Step 1 - the left child moves up to the node's position.
         # This detaches node from the tree, but it will be reattached
         # later.
+        if node.parent == None:
+            self.root = node.left
+            node.left.parent = None
+        else:
+            node.parent.replace_child(node, node.left)
 
         # Step 2 - the node becomes the right child of what used
         # to be its left child, but is now its parent. This will
         # detach left_right_child from the tree.
-
+        node.left.replace_child(leftRightChild, node)
         # Step 3 - reattach left_right_child as the left child of node.
+        node.set_child("left", leftRightChild)
         
-        pass
 
     # Updates the given node's height and rebalances the subtree if
     # the balancing factor is now -2 or +2. Rebalancing is done by
