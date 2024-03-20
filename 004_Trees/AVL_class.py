@@ -49,14 +49,15 @@ class Node:
         if which_child not in ("left", "right"):
             return False
         if (which_child == "left"):
-            self.parent.left = child
+            self.left = child
         else:
-            self.parent.right = child
+            self.right = child
         
-        if (child != None):
-            child.parent = self.parent
+        if (child is not None):
+            child.parent = self
             
         self.update_height()
+        return True
         
 
     # Replace a current child with a new child. Determines if
@@ -66,11 +67,15 @@ class Node:
     def replace_child(self, current_child, new_child):
         # Determine if current_child is a left or right child and 
         # assign properly
-
-
         # If neither of the above cases applied, then the new child
         # could not be attached to this node.
-        pass
+        
+        if self.left == current_child:
+            return self.set_child('left', new_child)
+        elif self.right == current_child:
+            return self.set_child('right', new_child)
+        return False
+        
 
 ########################################################################################
 #################################  Class for AVL TREE  #################################
@@ -100,6 +105,11 @@ class AVLTree:
         
         
         # Step 3 - reattach right_left_child as the right child of node.
+        
+        
+        rightLeftChild = self.right.left
+        if self.root is not None:
+            
         
         pass
 
