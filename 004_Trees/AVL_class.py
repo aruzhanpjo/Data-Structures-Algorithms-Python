@@ -100,14 +100,18 @@ class AVLTree:
         # later.
         if node.parent == None:
             self.root = node.right
+            node.right.parent = None
+            node.right.parent = None
+        else:
+            node.parent.replace_child(node, node.right)
         
         # Step 2 - the node becomes the left child of what used
         # to be its right child, but is now its parent. This will
         # detach right_left_child from the tree.
-        
+        node.right.replace_child(rightLeftChild, node)
         
         # Step 3 - reattach right_left_child as the right child of node.
-        
+        node.set_child("left", rightLeftChild)
         
         
 
@@ -148,13 +152,26 @@ class AVLTree:
         # First update the height of this node. This is because after 
         # each insertion and deletion this is called.
         # This ensures that the height is updated after each insertion/deletion
-          
+        self.update_height(node)
+        
+
         
         # Check for a right skew.    
             # The subtree is too big to the right.
                 # Double rotation case. First do a right rotation
                 # on the right child.
 
+        if (self.get_balance(node) == -2):
+            if (self.get_balance(node.right) == 1):
+                self.rotate_right(node.right)
+        
+        elif (self.get_balance(node) == 2):
+            if (self.get_balance() == -1):
+                self.rotate_left(node.left)
+            
+            return self.rotate_right(node)
+        
+        return node
                 
             # A left rotation will now make the subtree balanced.
         
@@ -166,7 +183,7 @@ class AVLTree:
             # A right rotation will now make the subtree balanced.
             
         # No imbalance, so just return the original node.
-        pass
+        
 
     # Insert a new node into the AVLTree. When insert() is complete,
     # the AVL tree will be balanced.
